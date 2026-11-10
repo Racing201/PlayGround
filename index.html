@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#07141b">
+  <title>Vuelta Rápida — Circuito Costa Azul</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800;900&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Vuelta Rápida, inicio">
+        <span class="brand-mark">VR<span>+</span></span>
+        <span class="brand-copy"><strong>VUELTA RÁPIDA</strong><small>ARCADE MOTOR CLUB</small></span>
+      </a>
+      <div class="track-name"><span class="live-dot"></span><span>CIRCUITO COSTA AZUL</span><i>·</i><span>CLÁSICO</span></div>
+      <button class="sound-button" id="soundToggle" aria-label="Activar o silenciar sonidos" title="Activar o silenciar sonidos"><span id="soundIcon">♫</span><span class="sound-label">SONIDO</span></button>
+    </header>
+
+    <section class="game-layout" aria-label="Juego de carreras">
+      <div class="race-frame" id="raceFrame">
+        <canvas id="gameCanvas" aria-label="Circuito de carreras. Usa las flechas o WASD para conducir."></canvas>
+        <div class="frame-vignette"></div>
+
+        <section class="race-hud" id="raceHud" aria-live="polite" hidden>
+          <div class="hud-card lap-card"><span class="eyebrow">VUELTA</span><strong><span id="lapCurrent">1</span><i>/</i><span id="lapTotal">3</span></strong><span class="lap-progress"><b id="lapBar"></b></span></div>
+          <div class="hud-card timer-card"><span class="eyebrow">TIEMPO</span><strong id="raceTime">00:00.00</strong><small id="bestTime">MEJOR —</small></div>
+          <div class="hud-card position-card"><span class="eyebrow">POSICIÓN</span><strong><span id="positionNow">1</span><i>/</i>4</strong><small id="positionLabel">EN CARRERA</small></div>
+          <div class="speed-card"><div class="speed-number"><strong id="speedValue">000</strong><span>KM/H</span></div><div class="speed-meter"><b id="speedMeter"></b></div><span class="gear-label">MARCHA <b id="gearValue">1</b></span></div>
+        </section>
+
+        <div class="countdown" id="countdown" hidden><span>PREPÁRATE</span><strong id="countNumber">3</strong></div>
+        <section class="screen-overlay intro-overlay" id="introOverlay">
+          <div class="intro-copy">
+            <div class="season-tag"><span></span> TEMPORADA · 01</div>
+            <p class="kicker">EL ASFALTO TE ESTÁ LLAMANDO</p>
+            <h1>UNA VUELTA<br><em>LO CAMBIA TODO.</em></h1>
+            <p class="intro-description">Tres vueltas. Cuatro pilotos. Un clásico azul listo para dejar su marca en la Costa Azul.</p>
+            <div class="intro-meta"><span><b>3</b> VUELTAS</span><i></i><span><b>4</b> PILOTOS</span><i></i><span><b>1</b> CIRCUITO</span></div>
+            <button class="primary-button" id="startButton"><span>ARRANCAR MOTOR</span><b>↗</b></button>
+            <span class="keyboard-hint">PULSA <kbd>ENTER</kbd> PARA EMPEZAR</span>
+          </div>
+          <div class="hero-car-wrap" aria-label="Tu coche, un deportivo clásico azul">
+            <div class="car-glow"></div><img class="hero-car" src="assets/car-reference.jpg" alt="Deportivo clásico azul, el coche del jugador">
+            <div class="car-caption"><span>01 / TU COCHE</span><strong>BLUE THUNDER</strong><small>CLÁSICO · TRACCIÓN TRASERA</small></div>
+            <div class="hero-spark">///</div>
+          </div>
+          <div class="intro-bottom"><span>01</span><div></div><span>CIUDAD COSTERA · 18°C</span></div>
+        </section>
+
+        <section class="screen-overlay pause-overlay" id="pauseOverlay" hidden>
+          <div class="pause-panel"><span class="pause-icon">Ⅱ</span><p class="kicker">BOXES</p><h2>PAUSA<br><em>DE CARRERA</em></h2><p>El circuito puede esperar un segundo.</p><button class="primary-button" id="resumeButton"><span>VOLVER A LA PISTA</span><b>↗</b></button><button class="text-button" id="restartButton">REINICIAR CARRERA <span>↻</span></button><small>También puedes pulsar <kbd>ESC</kbd> para continuar</small></div>
+        </section>
+
+        <section class="screen-overlay finish-overlay" id="finishOverlay" hidden>
+          <div class="finish-panel"><span class="season-tag"><span></span> BANDERA A CUADROS</span><p class="kicker" id="finishKicker">GRAN CARRERA</p><h2 id="finishTitle">¡LO<br><em>LOGRASTE!</em></h2><div class="finish-stats"><div><small>POSICIÓN</small><strong id="finishPosition">1.º</strong></div><div><small>TIEMPO</small><strong id="finishTime">00:00.00</strong></div></div><button class="primary-button" id="againButton"><span>OTRA CARRERA</span><b>↻</b></button><button class="text-button" id="menuButton">VOLVER AL INICIO <span>↗</span></button></div>
+        </section>
+
+        <div class="toast" id="toast" aria-live="polite"></div>
+      </div>
+
+      <aside class="side-panel">
+        <div class="panel-topline"><span>EL RETO</span><span class="panel-dot"></span></div>
+        <h2>DOMINA<br><em>LA CURVA.</em></h2>
+        <p>Un circuito cerrado junto al mar. Mantén la trazada, encuentra tu ritmo y cruza la meta primero.</p>
+        <div class="track-facts"><div><span>LONGITUD</span><strong>2.4 <small>KM</small></strong></div><div><span>RÉCORD</span><strong id="recordValue">—</strong></div></div>
+        <div class="side-divider"></div>
+        <div class="controls-heading"><span>CONTROLES</span><small>TECLADO</small></div>
+        <div class="key-guide"><div class="key-row"><span class="key-cluster"><kbd>W</kbd><kbd>↑</kbd></span><span>Acelerar</span></div><div class="key-row"><span class="key-cluster"><kbd>A</kbd><kbd>D</kbd></span><span>Girar</span></div><div class="key-row"><span class="key-cluster"><kbd>S</kbd><kbd>↓</kbd></span><span>Frenar / reversa</span></div><div class="key-row"><span class="key-cluster"><kbd>ESPACIO</kbd></span><span>Freno de mano</span></div></div>
+        <div class="tip-card"><span>✦</span><p><strong>CONSEJO DE PILOTO</strong><br>Reduce un poco antes de entrar a las curvas. Fuera de pista, el coche pierde velocidad.</p></div>
+        <div class="side-footer"><span>BLUE THUNDER <b>·</b> #01</span><span>© VR MOTOR CLUB</span></div>
+      </aside>
+    </section>
+
+    <footer class="bottom-bar"><div class="footer-location"><span class="location-icon">⌖</span><span>COSTA AZUL, FRANCIA</span><i>—</i><span>PISTA 01</span></div><div class="footer-center"><span class="flag-icon">▧</span> LA CARRERA EMPIEZA EN LA LÍNEA DE SALIDA</div><div class="footer-version"><span class="status-pip"></span> LISTO PARA CORRER <span class="footer-sep">/</span> <b>v1.0</b></div></footer>
+
+    <div class="touch-controls" id="touchControls" aria-label="Controles táctiles">
+      <div class="touch-steer"><button data-control="left" aria-label="Girar a la izquierda">←</button><button data-control="right" aria-label="Girar a la derecha">→</button></div>
+      <div class="touch-pedals"><button data-control="brake" aria-label="Frenar">FRENO</button><button class="touch-go" data-control="accelerate" aria-label="Acelerar">▲</button></div>
+    </div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
