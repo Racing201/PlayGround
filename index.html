@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#08121b">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect width=%2240%22 height=%2240%22 rx=%2220%22 fill=%22%2308121b%22/><text x=%2220%22 y=%2227%22 text-anchor=%22middle%22 font-family=%22Arial%22 font-weight=%22bold%22 font-size=%2218%22 fill=%22white%22>BT</text></svg>">
+  <title>Blue Thunder — Circuito de carreras</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Blue Thunder inicio">
+        <span class="brand-mark">BT<span>·</span></span>
+        <span class="brand-copy"><strong>BLUE THUNDER</strong><small>CLUB DE CARRERAS · 1996</small></span>
+      </a>
+      <div class="top-meta"><span class="live-dot"></span> MODO ARCADE <span class="meta-divider">/</span> CIRCUITO 01</div>
+      <button class="sound-button" id="soundToggle" aria-label="Activar o desactivar sonido" title="Sonido">♫ <span>SONIDO</span></button>
+    </header>
+
+    <section class="game-layout" aria-label="Juego de carreras Blue Thunder">
+      <div class="stage-wrap">
+        <div class="stage" id="stage">
+          <canvas id="game" aria-label="Circuito de carreras. Usa las flechas o WASD para conducir."></canvas>
+          <div class="race-hud" id="raceHud" hidden>
+            <div class="hud-block lap-block"><span class="hud-label">VUELTA</span><strong><span id="lapValue">01</span><i> / 03</i></strong><div class="lap-dots" id="lapDots"><b class="active"></b><b></b><b></b></div></div>
+            <div class="hud-block position-block"><span class="hud-label">POSICIÓN</span><strong><span id="positionValue">1</span><i> / 04</i></strong><small>GRAN PREMIO BT</small></div>
+            <div class="hud-block speed-block"><strong><span id="speedValue">000</span><i> km/h</i></strong><span class="hud-label">VELOCIDAD</span></div>
+            <div class="hud-block time-block"><span class="hud-label">TIEMPO</span><strong id="timeValue">00:00.0</strong><small id="bestValue">MEJOR —:—.—</small></div>
+          </div>
+          <div class="countdown" id="countdown" hidden>3</div>
+          <div class="toast" id="toast" hidden></div>
+          <div class="start-screen" id="startScreen">
+            <div class="start-card">
+              <div class="eyebrow"><span></span> TEMPORADA DE VERANO · 1996</div>
+              <h1>EL ASFALTO<br><em>TE ESPERA.</em></h1>
+              <p>Un circuito. Tres vueltas. Ninguna excusa.</p>
+              <button class="primary-button" id="startButton"><span>ARRANCAR CARRERA</span><b>↗</b></button>
+              <div class="start-note"><span class="keycap">↵</span> o pulsa para empezar</div>
+            </div>
+            <div class="track-stamp"><span>01</span><div>COASTLINE<br><small>INTERNATIONAL</small></div></div>
+          </div>
+          <div class="finish-screen" id="finishScreen" hidden>
+            <div class="finish-card"><span class="eyebrow">BANDERA A CUADROS</span><h2 id="finishTitle">¡VICTORIA!</h2><p id="finishCopy">Has conquistado el circuito.</p><div class="finish-time"><small>TIEMPO TOTAL</small><strong id="finishTime">00:00.0</strong></div><button class="primary-button" id="againButton"><span>OTRA CARRERA</span><b>↻</b></button></div>
+          </div>
+          <div class="mobile-controls" id="mobileControls" aria-label="Controles táctiles">
+            <div class="steer-controls"><button data-control="left" aria-label="Girar a la izquierda">◀</button><button data-control="right" aria-label="Girar a la derecha">▶</button></div>
+            <div class="drive-controls"><button class="brake-control" data-control="brake" aria-label="Frenar">FRENO</button><button class="gas-control" data-control="gas" aria-label="Acelerar">GAS <span>▲</span></button></div>
+          </div>
+          <div class="corner-tag"><span class="corner-icon">✳</span> COSTA DEL PACÍFICO <span>·</span> 24°C</div>
+        </div>
+        <div class="stage-footer"><span><i class="check-icon">✓</i> CIRCUITO CERRADO · 3 VUELTAS</span><span class="footer-right">RECORD <b id="recordInline">—:—.—</b> <span class="footer-slash">/</span> V.1.0</span></div>
+      </div>
+
+      <aside class="side-panel">
+        <section class="driver-card">
+          <div class="panel-kicker">TU MÁQUINA <span>№ 07</span></div>
+          <div class="car-art"><img src="assets/car-reference.jpg" alt="Coche deportivo azul y blanco de Blue Thunder"><div class="car-art-shade"></div><span class="car-number">07</span><span class="art-label">BLUE THUNDER<br><b>RACING DIVISION</b></span></div>
+          <div class="car-name-row"><div><h2>BLUE THUNDER</h2><p>GT COUPÉ · CLASE A</p></div><span class="class-badge">A</span></div>
+          <div class="stat-row"><span>ACELERACIÓN</span><div class="stat-track"><i style="width:82%"></i></div><b>82</b></div>
+          <div class="stat-row"><span>VELOCIDAD</span><div class="stat-track"><i style="width:88%"></i></div><b>88</b></div>
+          <div class="stat-row"><span>AGARRE</span><div class="stat-track"><i style="width:74%"></i></div><b>74</b></div>
+        </section>
+        <section class="controls-card">
+          <div class="panel-kicker">CONTROLES <span>TECLADO</span></div>
+          <div class="key-grid"><div class="key-set"><kbd>W</kbd><div><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd></div></div><p><b>CONDUCIR</b><small>Acelera · gira · frena</small></p></div>
+          <div class="key-grid compact"><div class="key-set"><kbd>↑</kbd><div><kbd>←</kbd><kbd>↓</kbd><kbd>→</kbd></div></div><p><b>O TAMBIÉN</b><small>Usa las flechas</small></p></div>
+          <div class="controls-hint">En móvil, usa los botones<br>sobre la pista.</div>
+        </section>
+        <div class="tip-card"><span>✦</span><p><b>CONSEJO DEL BOX</b>Levanta el pie en las curvas cerradas para no salirte de la pista.</p></div>
+      </aside>
+    </section>
+    <footer class="page-footer"><span>© 1996 BLUE THUNDER RACING</span><span>HECHO PARA CORRER <b>♥</b></span><span>CALIFORNIA, USA</span></footer>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
